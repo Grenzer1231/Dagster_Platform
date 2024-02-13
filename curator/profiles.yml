@@ -1,0 +1,13 @@
+curator:
+  outputs:
+    dev:
+      dbname: dwh
+      host: postgres
+      pass: postgres
+      port: 5432
+      schema: dbo
+      threads: 4
+      type: postgres
+      user: postgres
+  target: dev
+
