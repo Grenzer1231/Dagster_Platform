@@ -10,6 +10,7 @@ RUN pip install \
     dagster-postgres \
     dagster-docker \ 
     dagster-dbt \ 
+    dagster-embedded-elt \
     dbt-postgres
 
 # Set $DAGSTER_HOME and copy dagster instance and workspace YAML there
