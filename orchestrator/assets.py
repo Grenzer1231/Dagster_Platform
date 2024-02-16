@@ -1,5 +1,6 @@
 from dagster import AssetExecutionContext
 from dagster import AssetSpec
+from dagster import EnvVar
 from dagster_dbt import DbtCliResource, dbt_assets
 from dagster_embedded_elt.sling import (
     SlingMode,
@@ -8,6 +9,8 @@ from dagster_embedded_elt.sling import (
     SlingTargetConnection,
     build_sling_asset,
 )  
+
+import os
 
 from .constants import dbt_manifest_path
 
@@ -24,11 +27,11 @@ target = SlingTargetConnection(
 
 source = SlingSourceConnection(
     type="snowflake",
-    host="tb53604.southeast-asia.azure.snowflakecomputing.com",
-    user="mdinglasan1231",
+    host=EnvVar("SNOWFLAKE_HOST"),
+    user=EnvVar("SNOWFLAKE_USER"),
     database="SNOWFLAKE_SAMPLE_DATA",
-    password="Grenzer12",
-    role="ACCOUNTADMIN",
+    password=EnvVar("SNOWFLAKE_PASSWORD"),
+    role=EnvVar("SNOWFLAKE_ROLE"),
 )
 
 asset_def = build_sling_asset(
