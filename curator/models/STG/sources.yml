@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: dwh
+    database: dwh
+    schema: dbo
+    tables: 
+      - name: customer
+        meta: 
+          dagster: 
+            asset_key: ["customers"]
+      - name: lineitem
+        meta: 
+          dagster: 
+            asset_key: ["line_item"]
+      - name: nation
+        meta: 
+          dagster: 
+            asset_key: ["nation"]
+      - name: orders
+        meta: 
+          dagster: 
+            asset_key: ["orders"]
+      - name: partsupp
+        meta: 
+          dagster: 
+            asset_key: ["part_supplier"]
+      - name: part
+        meta: 
+          dagster: 
+            asset_key: ["parts"]
+      - name: region
+        meta: 
+          dagster: 
+            asset_key: ["region"]
+      - name: supplier
+        meta: 
+          dagster: 
+            asset_key: ["supplier"]
