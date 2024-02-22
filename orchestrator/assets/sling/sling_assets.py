@@ -15,7 +15,7 @@ from dagster_embedded_elt.sling import (
 customer_asset_def = build_sling_asset(
     asset_spec=AssetSpec("customers"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER",
-    target_object="dbo.CUSTOMER",
+    target_object="source.CUSTOMER",
     mode=SlingMode.INCREMENTAL,
     primary_key="C_CUSTKEY",
 )
@@ -23,14 +23,14 @@ customer_asset_def = build_sling_asset(
 lineitem_asset_def = build_sling_asset(
     asset_spec=AssetSpec("line_item"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM",
-    target_object="dbo.LINEITEM",
+    target_object="source.LINEITEM",
     mode=SlingMode.FULL_REFRESH,
 )
 
 part_asset_def = build_sling_asset(
     asset_spec=AssetSpec("parts"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PART",
-    target_object="dbo.PART",
+    target_object="source.PART",
     mode=SlingMode.INCREMENTAL,
     primary_key="P_PARTKEY",
 )
@@ -38,7 +38,7 @@ part_asset_def = build_sling_asset(
 partsupp_asset_def = build_sling_asset(
     asset_spec=AssetSpec("part_supplier"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP",
-    target_object="dbo.PARTSUPP",
+    target_object="source.PARTSUPP",
     mode=SlingMode.FULL_REFRESH,
     
 )
@@ -46,7 +46,7 @@ partsupp_asset_def = build_sling_asset(
 supplier_asset_def = build_sling_asset(
     asset_spec=AssetSpec("supplier"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER",
-    target_object="dbo.SUPPLIER",
+    target_object="source.SUPPLIER",
     mode=SlingMode.INCREMENTAL,
     primary_key="S_SUPPKEY",
 )
@@ -54,7 +54,7 @@ supplier_asset_def = build_sling_asset(
 region_asset_def = build_sling_asset(
     asset_spec=AssetSpec("region"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION",
-    target_object="dbo.REGION",
+    target_object="source.REGION",
     mode=SlingMode.INCREMENTAL,
     primary_key="R_REGIONKEY",
 )
@@ -62,7 +62,7 @@ region_asset_def = build_sling_asset(
 nation_asset_def = build_sling_asset(
     asset_spec=AssetSpec("nation"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION",
-    target_object="dbo.NATION",
+    target_object="source.NATION",
     mode=SlingMode.INCREMENTAL,
     primary_key="N_NATIONKEY",
 )
@@ -70,7 +70,7 @@ nation_asset_def = build_sling_asset(
 orders_asset_def = build_sling_asset(
     asset_spec=AssetSpec("orders"),
     source_stream="SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS",
-    target_object="dbo.ORDERS",
+    target_object="source.ORDERS",
     mode=SlingMode.INCREMENTAL,
     primary_key="O_ORDERKEY",
 )
