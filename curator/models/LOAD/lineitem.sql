@@ -1,0 +1,1 @@
+select * from {{ref('lineitem_int')}}

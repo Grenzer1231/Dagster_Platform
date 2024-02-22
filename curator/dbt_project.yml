@@ -35,8 +35,11 @@ models:
     # Config indicated by + and applies to all files under models/example/
     STG:
       +materialized: table
+      +schema: staging
     INT:
       +materialized: table
+      +schema: integration
     LOAD:
       +materialized: table
+      +schema: dbo 
 
