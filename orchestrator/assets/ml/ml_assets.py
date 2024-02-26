@@ -6,12 +6,22 @@ from datetime import datetime, timedelta
 import statsmodels.api as sm
 from statsmodels.tsa.ar_model import AutoReg
 from statsmodels.tsa.stattools import adfuller
+from sklearn.model_selection import train_test_split
+from sklearn import linear_model
 
-from dagster import asset, multi_asset, AssetOut
+from dagster import asset, multi_asset, AssetOut, AssetKey, AssetExecutionContext, Output
+from dagster_dbt import get_asset_key_for_model
 
-@asset
-def load_data_from_postgres():
-    uri = "postgresql://postgres:postgres@localhost:5432/dwh"
+from ..dbt_user_assets import dbt_user_assets
+
+
+
+@asset(
+        deps=get_asset_key_for_model([dbt_user_assets.curator_dbt_assets], "lineitem"),
+        output_required=False,
+    )
+def load_data_from_postgres(context: AssetExecutionContext):
+    uri = "postgresql://postgres:postgres@postgres:5432/dwh"
     query = """
         SELECT 
             sum(quantity) as orders, 
@@ -23,48 +33,5 @@ def load_data_from_postgres():
 """
     df = pl.LazyFrame(pl.read_database_uri(query=query, uri=uri)).collect()
 
+
     return df
-
-@asset
-def adfuller_test(load_data_from_postgres):
-    quantity = load_data_from_postgres.select("orders")
-    return adfuller(quantity)
-
-@multi_asset(
-        outs={
-            "training_data": AssetOut(),
-            "test_data": AssetOut()
-        }
-)
-def training_test_data(load_data_from_postgres):
-
-    # Convert to pandas dataframe 
-
-    orders_df = load_data_from_postgres.to_pandas()
-    orders_df.index = orders_df['ship_date']
-    
-
-
-    del orders_df['ship_date']
-    train_end = datetime(1996,12,31)
-    test_end = datetime(1998, 1,1)
-
-    train_data = orders_df[:train_end]['orders']
-    test_data = orders_df[train_end + timedelta(days=1):test_end]['orders']
-
-    return train_data, test_data
-
-@asset
-def ar_model(training_data):
-    model = AutoReg(training_data, lags=1)
-    model_fit = model.fit()
-
-    return model_fit
-
-@asset
-def ar_model_test_mse(test_data, ar_model):
-    predictions = ar_model.predict(start=test_data.index[0], end=test_data.index[-1])
-    residuals = test_data - predictions
-    mse = np.sqrt(np.mean(residuals**2))
-
-    return mse
