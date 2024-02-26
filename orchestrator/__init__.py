@@ -3,7 +3,7 @@ import os
 from dagster import Definitions
 from dagster_dbt import DbtCliResource
 
-from .assets import curator_dbt_assets, sling_assets
+from .assets import curator_dbt_assets, sling_assets, ml_assets
 from .assets.constants import dbt_project_dir
 from .resources.sling_resources import sling_resource
 from .schedules import schedules
@@ -11,6 +11,7 @@ from .schedules import schedules
 all_assets = [
     curator_dbt_assets,
     *sling_assets,
+    *ml_assets
 ]
 
 defs = Definitions(

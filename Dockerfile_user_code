@@ -10,7 +10,14 @@ RUN pip install \
     dagster-dbt \ 
     dagster-embedded-elt \
     dbt-core \
-    dbt-postgres 
+    dbt-postgres \ 
+    scikit-learn \ 
+    numpy \ 
+    pandas \ 
+    polars[all] \ 
+    scipy \ 
+    statsmodels 
+
 
 # Add repository code
 

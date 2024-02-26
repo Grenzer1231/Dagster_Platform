@@ -8,9 +8,6 @@ from . import sling, ml
 ML = "machine_learning"
 SLING = "sling"
 
-sling_assets = load_assets_from_package_module(package_module=sling, group_name=SLING)
-
-ml_assets = load_assets_from_package_module(package_module=ml, group_name=ML)
 
 class CustomDagsterDbtTranslator(DagsterDbtTranslator): 
     def get_group_name(
@@ -25,3 +22,6 @@ dagster_dbt_translator = CustomDagsterDbtTranslator(
 @dbt_assets(manifest=dbt_manifest_path, dagster_dbt_translator=CustomDagsterDbtTranslator(),)
 def curator_dbt_assets(context: AssetExecutionContext, dbt: DbtCliResource):
     yield from dbt.cli(["build"], context=context).stream()
+
+sling_assets = load_assets_from_package_module(package_module=sling, group_name=SLING)
+ml_assets = load_assets_from_package_module(package_module=ml, group_name=ML)
