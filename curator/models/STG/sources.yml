@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: dwh
     database: dwh
-    schema: source
+    schema: dbo
     tables: 
       - name: customer
         meta: 
