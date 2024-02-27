@@ -58,8 +58,9 @@ services:
     depends_on:
       - postgres_dwh
     volumes:
-      - ./orchestrator:/opt/dagster/app/orchestrator
-      - ./curator:/opt/dagster/app/curator
+      - ./code_location:/opt/dagster/app/code_location
+      #- ./orchestrator:/opt/dagster/app/orchestrator
+      #- ./curator:/opt/dagster/app/curator
 
   # This service runs dagster-webserver, which loads your user code from the user code container.
   # Since our instance uses the QueuedRunCoordinator, any runs submitted from the webserver will be put on
