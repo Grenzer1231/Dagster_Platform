@@ -1,0 +1,6 @@
+version: 2
+
+models: 
+  - name: customers_stg
+    description: This table contains information about the customer
+  
