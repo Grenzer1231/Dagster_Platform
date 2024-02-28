@@ -35,3 +35,30 @@ def load_data_from_postgres(context: AssetExecutionContext):
 
 
     return df
+
+@multi_asset(
+        outs={
+            "training_data": AssetOut(),
+            "test_data": AssetOut()
+        },
+        
+)
+def train_test_split(load_data_from_postgres):
+    return 1,2
+
+@asset(output_required=False)
+def linear_regression_model(training_data):
+    pass 
+
+@asset(output_required=False)
+def linear_regression_performance(test_data):
+    pass
+
+@asset(output_required=False)
+def linear_regression_predictions(test_data):
+    pass
+
+@asset(output_required=False)
+def load_predictions_to_postgres(linear_regression_predictions):
+    pass 
+
