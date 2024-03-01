@@ -58,7 +58,7 @@ services:
     depends_on:
       - postgres_dwh
     volumes:
-      - ./code_location:/opt/dagster/app/code_location
+      - ./code_location:/opt/dagster/app/code_location/
       #- ./orchestrator:/opt/dagster/app/orchestrator
       #- ./curator:/opt/dagster/app/curator
 
