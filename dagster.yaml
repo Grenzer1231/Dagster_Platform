@@ -14,16 +14,17 @@ run_launcher:
       - DAGSTER_POSTGRES_USER
       - DAGSTER_POSTGRES_PASSWORD
       - DAGSTER_POSTGRES_DB
-      - SNOWFLAKE_HOST
-      - SNOWFLAKE_USER
-      - SNOWFLAKE_PASSWORD
-      - SNOWFLAKE_ROLE
+      - SOURCE_HOST
+      - SOURCE_USER
+      - SOURCE_PASSWORD
+      - SOURCE_ROLE
     network: docker_example_network
     container_kwargs:
       volumes: # Make docker client accessible to any launched containers as well
         - /var/run/docker.sock:/var/run/docker.sock
         - /tmp/io_manager_storage:/tmp/io_manager_storage
-        - C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/code_location/:/opt/dagster/app/code_location/
+        - ./code_location/:/opt/dagster/app/code_location/
+        #- C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/code_location/:/opt/dagster/app/code_location/
         #- C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/orchestrator:/opt/dagster/app/orchestrator
         #- C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/curator:/opt/dagster/app/curator
 

@@ -2,6 +2,7 @@ import polars as pl
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+import os
 
 import statsmodels.api as sm
 from statsmodels.tsa.ar_model import AutoReg
@@ -21,7 +22,9 @@ from ..dbt_user_assets import dbt_user_assets
         output_required=False,
     )
 def load_data_from_postgres(context: AssetExecutionContext):
-    uri = "postgresql://postgres:postgres@postgres:5432/dwh"
+    pg_user = os.getenv("POSTGRES_USER")
+    pg_pass = os.getenv("POSTGRES_PASSWORD")
+    uri = f"postgresql://{pg_user}:{pg_pass}@postgres:5432/dwh"
     query = """
         SELECT 
             sum(quantity) as orders, 

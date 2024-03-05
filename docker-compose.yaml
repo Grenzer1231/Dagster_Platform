@@ -12,9 +12,9 @@ services:
     volumes:
       - ./dwh2:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_DB: "dwh"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_DB}
     networks:
       - docker_example_network
   
@@ -44,15 +44,15 @@ services:
     image: docker_example_user_code_image
     restart: always
     environment:
-      DAGSTER_POSTGRES_USER: "postgres"
-      DAGSTER_POSTGRES_PASSWORD: "postgres"
-      DAGSTER_POSTGRES_DB: "dwh"
+      DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+      DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+      DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
       DAGSTER_CURRENT_IMAGE: "docker_example_user_code_image"
       DAGSTER_DBT_PARSE_PROJECT_ON_LOAD: 1
-      SNOWFLAKE_HOST: "tb53604.southeast-asia.azure.snowflakecomputing.com"
-      SNOWFLAKE_USER: "mdinglasan1231"
-      SNOWFLAKE_PASSWORD: "INGHubsPH2024"
-      SNOWFLAKE_ROLE: "ACCOUNTADMIN"
+      SOURCE_HOST: "tb53604.southeast-asia.azure.snowflakecomputing.com"
+      SOURCE_USER: ${SOURCE_USER}
+      SOURCE_PASSWORD: ${SOURCE_PASSWORD}
+      SOURCE_ROLE: ${SOURCE_ROLE}
     networks:
       - docker_example_network
     depends_on:
@@ -83,13 +83,13 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DAGSTER_POSTGRES_USER: "postgres"
-      DAGSTER_POSTGRES_PASSWORD: "postgres"
-      DAGSTER_POSTGRES_DB: "dwh"
-      SNOWFLAKE_HOST: "tb53604.southeast-asia.azure.snowflakecomputing.com"
-      SNOWFLAKE_USER: "mdinglasan1231"
-      SNOWFLAKE_PASSWORD: "INGHubsPH2024"
-      SNOWFLAKE_ROLE: "ACCOUNTADMIN"
+      DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+      DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+      DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+      SOURCE_HOST: ${SOURCE_HOST}
+      SOURCE_USER: ${SOURCE_USER}
+      SOURCE_PASSWORD: ${SOURCE_PASSWORD}
+      SOURCE_ROLE: ${SOURCE_ROLE}
     volumes: # Make docker client accessible so we can terminate containers from the webserver
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
@@ -111,13 +111,13 @@ services:
     container_name: docker_example_daemon
     restart: on-failure
     environment:
-      DAGSTER_POSTGRES_USER: "postgres"
-      DAGSTER_POSTGRES_PASSWORD: "postgres"
-      DAGSTER_POSTGRES_DB: "dwh"
-      SNOWFLAKE_HOST: "tb53604.southeast-asia.azure.snowflakecomputing.com"
-      SNOWFLAKE_USER: "mdinglasan1231"
-      SNOWFLAKE_PASSWORD: "INGHubsPH2024"
-      SNOWFLAKE_ROLE: "ACCOUNTADMIN"
+      DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+      DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+      DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+      SOURCE_HOST: ${SOURCE_HOST}
+      SOURCE_USER: ${SOURCE_USER}
+      SOURCE_PASSWORD: ${SOURCE_PASSWORD}
+      SOURCE_ROLE: ${SOURCE_ROLE}
     volumes: # Make docker client accessible so we can launch containers using host docker
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
@@ -131,3 +131,29 @@ networks:
   docker_example_network:
     driver: bridge
     name: docker_example_network
+
+secrets: 
+  postgres_user:
+    file: ./secrets/postgres_user.txt
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  postgres_db:
+    file: ./secrets/postgres_db.txt
+  dagster_postgres_host: 
+    file: ./secrets/dagster_postgres_host.txt
+  dagster_postgres_db:
+    file: ./secrets/dagster_postgres_db.txt
+  dagster_postgres_user:
+    file: ./secrets/dagster_postgres_user.txt
+  dagster_postgres_password:
+    file: ./secrets/dagster_postgres_password.txt
+  data_source_host:
+    file: ./secrets/data_source_host.txt
+  data_source_user:
+    file: ./secrets/data_source_user.txt
+  data_source_password:
+    file: ./secrets/data_source_password.txt
+  data_source_role:
+    file: ./secrets/data_source_role.txt
+  
+  
