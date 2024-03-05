@@ -6,28 +6,28 @@ services:
   postgres_dwh:
     image: postgres:15
     container_name: postgres_dwh
-    hostname: postgres
+    hostname: ${POSTGRES_HOST}
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:5432
     volumes:
       - ./dwh2:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${POSTGRES_PASSWORD}
-      POSTGRES_PASSWORD: ${POSTGRES_DB}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - docker_example_network
   
   pgadmin: 
     image: dpage/pgadmin4
     ports:
-      - 80:80
+      - ${PGADMIN_PORT}:80
     networks:
       - docker_example_network
     restart: always
     environment:
-      - PGADMIN_DEFAULT_EMAIL=user@email.com
-      - PGADMIN_DEFAULT_PASSWORD=password
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     
 
   # This service runs the gRPC server that loads your user code, in both dagster-webserver
@@ -44,15 +44,21 @@ services:
     image: docker_example_user_code_image
     restart: always
     environment:
+      DAGSTER_POSTGRES_HOST: ${DAGSTER_POSTGRES_HOST}
+      DAGSTER_POSTGRES_PORT: ${DAGSTER_POSTGRES_PORT}
       DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
       DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
       DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
       DAGSTER_CURRENT_IMAGE: "docker_example_user_code_image"
       DAGSTER_DBT_PARSE_PROJECT_ON_LOAD: 1
-      SOURCE_HOST: "tb53604.southeast-asia.azure.snowflakecomputing.com"
+      SOURCE_HOST: ${SOURCE_HOST}
       SOURCE_USER: ${SOURCE_USER}
       SOURCE_PASSWORD: ${SOURCE_PASSWORD}
       SOURCE_ROLE: ${SOURCE_ROLE}
+      TARGET_HOST: ${TARGET_HOST}
+      TARGET_PORT: ${TARGET_PORT}
+      TARGET_USER: ${TARGET_USER}
+      TARGET_PASSWORD: ${TARGET_PASSWORD}
     networks:
       - docker_example_network
     depends_on:
@@ -83,6 +89,8 @@ services:
     ports:
       - "3000:3000"
     environment:
+      DAGSTER_POSTGRES_HOST: ${DAGSTER_POSTGRES_HOST}
+      DAGSTER_POSTGRES_PORT: ${DAGSTER_POSTGRES_PORT}
       DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
       DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
       DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
@@ -90,6 +98,10 @@ services:
       SOURCE_USER: ${SOURCE_USER}
       SOURCE_PASSWORD: ${SOURCE_PASSWORD}
       SOURCE_ROLE: ${SOURCE_ROLE}
+      TARGET_HOST: ${TARGET_HOST}
+      TARGET_PORT: ${TARGET_PORT}
+      TARGET_USER: ${TARGET_USER}
+      TARGET_PASSWORD: ${TARGET_PASSWORD}
     volumes: # Make docker client accessible so we can terminate containers from the webserver
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
@@ -111,6 +123,8 @@ services:
     container_name: docker_example_daemon
     restart: on-failure
     environment:
+      DAGSTER_POSTGRES_HOST: ${DAGSTER_POSTGRES_HOST}
+      DAGSTER_POSTGRES_PORT: ${DAGSTER_POSTGRES_PORT}
       DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
       DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
       DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
@@ -118,6 +132,10 @@ services:
       SOURCE_USER: ${SOURCE_USER}
       SOURCE_PASSWORD: ${SOURCE_PASSWORD}
       SOURCE_ROLE: ${SOURCE_ROLE}
+      TARGET_HOST: ${TARGET_HOST}
+      TARGET_PORT: ${TARGET_PORT}
+      TARGET_USER: ${TARGET_USER}
+      TARGET_PASSWORD: ${TARGET_PASSWORD}
     volumes: # Make docker client accessible so we can launch containers using host docker
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
@@ -132,28 +150,5 @@ networks:
     driver: bridge
     name: docker_example_network
 
-secrets: 
-  postgres_user:
-    file: ./secrets/postgres_user.txt
-  postgres_password:
-    file: ./secrets/postgres_password.txt
-  postgres_db:
-    file: ./secrets/postgres_db.txt
-  dagster_postgres_host: 
-    file: ./secrets/dagster_postgres_host.txt
-  dagster_postgres_db:
-    file: ./secrets/dagster_postgres_db.txt
-  dagster_postgres_user:
-    file: ./secrets/dagster_postgres_user.txt
-  dagster_postgres_password:
-    file: ./secrets/dagster_postgres_password.txt
-  data_source_host:
-    file: ./secrets/data_source_host.txt
-  data_source_user:
-    file: ./secrets/data_source_user.txt
-  data_source_password:
-    file: ./secrets/data_source_password.txt
-  data_source_role:
-    file: ./secrets/data_source_role.txt
   
   

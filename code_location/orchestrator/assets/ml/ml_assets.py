@@ -10,7 +10,7 @@ from statsmodels.tsa.stattools import adfuller
 from sklearn.model_selection import train_test_split
 from sklearn import linear_model
 
-from dagster import asset, multi_asset, AssetOut, AssetKey, AssetExecutionContext, Output
+from dagster import asset, multi_asset, AssetOut, AssetKey, AssetExecutionContext, Output, EnvVar
 from dagster_dbt import get_asset_key_for_model
 
 from ..dbt_user_assets import dbt_user_assets
@@ -22,9 +22,13 @@ from ..dbt_user_assets import dbt_user_assets
         output_required=False,
     )
 def load_data_from_postgres(context: AssetExecutionContext):
-    pg_user = os.getenv("POSTGRES_USER")
-    pg_pass = os.getenv("POSTGRES_PASSWORD")
-    uri = f"postgresql://{pg_user}:{pg_pass}@postgres:5432/dwh"
+
+    pg_user = os.getenv("TARGET_USER")
+    pg_pass = os.getenv("TARGET_PASSWORD")
+    pg_host = os.getenv("TARGET_HOST")
+    pg_port = os.getenv("TARGET_PORT")
+
+    uri = f"postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/dwh"
     query = """
         SELECT 
             sum(quantity) as orders, 

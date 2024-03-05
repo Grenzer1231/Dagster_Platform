@@ -7,11 +7,11 @@ from dagster import EnvVar
 
 target = SlingTargetConnection(
     type="postgres",
-    host="postgres",
-    port="5432",
+    host=EnvVar("TARGET_USER"),
+    port=EnvVar("TARGET_PORT"),
     database="dwh",
-    user=EnvVar("POSTGRES_USER"),
-    password=EnvVar("POSTGRES_PASSWORD"),
+    user=EnvVar("TARGET_USER"),
+    password=EnvVar("TARGET_PASSWORD"),
 )
 
 source = SlingSourceConnection(
