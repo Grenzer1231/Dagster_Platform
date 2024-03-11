@@ -7,20 +7,20 @@ from dagster import EnvVar
 
 target = SlingTargetConnection(
     type="postgres",
-    host="postgres",
-    port="5432",
+    host=EnvVar("TARGET_USER"),
+    port=EnvVar("TARGET_PORT"),
     database="dwh",
-    user="postgres",
-    password="postgres",
+    user=EnvVar("TARGET_USER"),
+    password=EnvVar("TARGET_PASSWORD"),
 )
 
 source = SlingSourceConnection(
     type="snowflake",
-    host=EnvVar("SNOWFLAKE_HOST"),
-    user=EnvVar("SNOWFLAKE_USER"),
+    host=EnvVar("SOURCE_HOST"),
+    user=EnvVar("SOURCE_USER"),
     database="SNOWFLAKE_SAMPLE_DATA",
-    password=EnvVar("SNOWFLAKE_PASSWORD"),
-    role=EnvVar("SNOWFLAKE_ROLE"),
+    password=EnvVar("SOURCE_PASSWORD"),
+    role=EnvVar("SOURCE_ROLE"),
 )
 
 sling_resource = SlingResource(source_connection=source, target_connection=target)

@@ -2,12 +2,12 @@ curator:
   outputs:
     dev:
       dbname: dwh
-      host: postgres
-      pass: postgres
-      port: 5432
+      host: "{{ env_var('TARGET_HOST') }}"
+      pass: "{{ env_var('TARGET_PASSWORD') }}"
+      port: "{{ env_var('TARGET_PORT') | as_number}}"
       schema: dbo
       threads: 4
       type: postgres
-      user: postgres
+      user: "{{ env_var('TARGET_USER') }}"
   target: dev
 

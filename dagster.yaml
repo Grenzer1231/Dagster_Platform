@@ -11,19 +11,26 @@ run_launcher:
   class: DockerRunLauncher
   config:
     env_vars:
+      - DAGSTER_POSTGRES_HOST
+      - DAGSTER_POSTGRES_PORT
       - DAGSTER_POSTGRES_USER
       - DAGSTER_POSTGRES_PASSWORD
       - DAGSTER_POSTGRES_DB
-      - SNOWFLAKE_HOST
-      - SNOWFLAKE_USER
-      - SNOWFLAKE_PASSWORD
-      - SNOWFLAKE_ROLE
+      - SOURCE_HOST
+      - SOURCE_USER
+      - SOURCE_PASSWORD
+      - SOURCE_ROLE
+      - TARGET_HOST
+      - TARGET_PORT
+      - TARGET_USER
+      - TARGET_PASSWORD
     network: docker_example_network
     container_kwargs:
-      volumes: # Make docker client accessible to any launched containers as well
+      volumes: # Make docker client accessible to any launched containers as well. Must specify absolute path as relative paths don't work
         - /var/run/docker.sock:/var/run/docker.sock
         - /tmp/io_manager_storage:/tmp/io_manager_storage
-        - C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/code_location:/opt/dagster/app/code_location
+        #- ./code_location/:/opt/dagster/app/code_location/
+        - C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/code_location/:/opt/dagster/app/code_location/
         #- C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/orchestrator:/opt/dagster/app/orchestrator
         #- C:/Users/QH55LW/OneDrive - ING/Desktop/Docker/Tooling-V2/curator:/opt/dagster/app/curator
 
@@ -32,21 +39,24 @@ run_storage:
   class: PostgresRunStorage
   config:
     postgres_db:
-      hostname: postgres_dwh
+      hostname: 
+        env: DAGSTER_POSTGRES_HOST
       username:
         env: DAGSTER_POSTGRES_USER
       password:
         env: DAGSTER_POSTGRES_PASSWORD
       db_name:
         env: DAGSTER_POSTGRES_DB
-      port: 5432
+      port:
+        env: DAGSTER_POSTGRES_PORT
 
 schedule_storage:
   module: dagster_postgres.schedule_storage
   class: PostgresScheduleStorage
   config:
     postgres_db:
-      hostname: postgres_dwh
+      hostname:
+        env: DAGSTER_POSTGRES_HOST
       username:
         env: DAGSTER_POSTGRES_USER
       password:
@@ -60,7 +70,8 @@ event_log_storage:
   class: PostgresEventLogStorage
   config:
     postgres_db:
-      hostname: postgres_dwh
+      hostname:
+        env: DAGSTER_POSTGRES_HOST
       username:
         env: DAGSTER_POSTGRES_USER
       password:
