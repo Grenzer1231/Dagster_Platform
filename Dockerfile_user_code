@@ -16,7 +16,8 @@ RUN pip install \
     pandas \ 
     polars[all] \ 
     scipy \ 
-    statsmodels 
+    statsmodels \ 
+    connectorx>=0.3.2
 
 
 # Add repository code

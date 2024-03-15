@@ -22,26 +22,26 @@ from ..dbt_user_assets import dbt_user_assets
         output_required=False,
     )
 def load_data_from_postgres(context: AssetExecutionContext):
+    pass
+    #pg_user = os.getenv("TARGET_USER")
+    #pg_pass = os.getenv("TARGET_PASSWORD")
+    #pg_host = os.getenv("TARGET_HOST")
+    #pg_port = os.getenv("TARGET_PORT")
 
-    pg_user = os.getenv("TARGET_USER")
-    pg_pass = os.getenv("TARGET_PASSWORD")
-    pg_host = os.getenv("TARGET_HOST")
-    pg_port = os.getenv("TARGET_PORT")
+    #uri = f"postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/dwh"
+    #query = """
+        #SELECT 
+            #sum(quantity) as orders, 
+            #ship_date 
+        #FROM dbo.lineitem 
+        #where ship_date between '1993-01-01' and '1997-12-31' 
+        #group by ship_date
 
-    uri = f"postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/dwh"
-    query = """
-        SELECT 
-            sum(quantity) as orders, 
-            ship_date 
-        FROM dbo.lineitem 
-        where ship_date between '1993-01-01' and '1997-12-31' 
-        group by ship_date
-
-"""
-    df = pl.LazyFrame(pl.read_database_uri(query=query, uri=uri)).collect()
+#"""
+    #df = pl.LazyFrame(pl.read_database_uri(query=query, uri=uri, engine='connectorx')).collect()
 
 
-    return df
+    #return df
 
 @multi_asset(
         outs={
