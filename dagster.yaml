@@ -29,7 +29,8 @@ run_launcher:
       volumes: # Make docker client accessible to any launched containers as well. Must specify absolute path as relative paths don't work
         - /var/run/docker.sock:/var/run/docker.sock
         - /tmp/io_manager_storage:/tmp/io_manager_storage
-        # indicate the absolute path of your code location in your machine. In production settings, bind mounts to your code location should be discouraged. Use COPY instead
+        # indicate the absolute path of your code location in your machine. In production settings, bind mounts to your code location should be discouraged to avoid breaking your pipeline in prod.
+        # Use COPY instead
         - /absolute_path_to_your_code/:/opt/dagster/app/code_location/ 
         
 
